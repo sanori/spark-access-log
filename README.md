@@ -1,7 +1,10 @@
 # access.log parser for Spark SQL
 Simple HTTPd log (a.k.a. access.log) parser for Spark SQL.
 
-Currently, Combined and Common Log format is supported.
+Currently, [Combined](https://httpd.apache.org/docs/2.4/en/logs.html#combined)
+and
+[Common](https://en.wikipedia.org/wiki/Common_Log_Format)
+log formats are supported.
 
 ## How to use
 
@@ -52,4 +55,21 @@ val lines = sc.textFile("access.log")
 val rdd = lines.map(toCombinedLog)
 ```
 
+## Other information
 
+### How to build
+```
+sbt clean package
+```
+generates `accesslog_2.11-0.1.0-SNAPSHOT.jar` in `target/scala-2.11`.
+
+### Motivation
+ * To simplify analysis of web server logs
+ * Most of the logs of web server, that is HTTP server, are in Combined or Common log format.
+ * To make user defined function that can be used on spark-sql command
+
+### Alternative
+If you want to view access.log as a table on Hive, not on Spark,
+or want to process various log formats,
+[nielsbasjes/logparser](https://github.com/nielsbasjes/logparser/)
+might be better solution.
