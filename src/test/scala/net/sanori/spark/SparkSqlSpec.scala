@@ -2,6 +2,7 @@ package net.sanori.spark
 
 import java.nio.file.Paths
 
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkContext
 import org.apache.spark.sql._
 import org.scalatest.{BeforeAndAfterAll, FunSpec}
@@ -17,6 +18,8 @@ abstract class SparkSqlSpec extends FunSpec with BeforeAndAfterAll {
 
   override def beforeAll() = {
     super.beforeAll
+    Logger.getLogger("org.apache").setLevel(Level.WARN)
+
     spark = SparkSession.builder
       .master("local[*]")
       .getOrCreate
