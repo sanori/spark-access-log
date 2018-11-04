@@ -11,7 +11,7 @@ log formats are supported.
 ### SQL (spark-sql)
 When start spark-sql, include jar file of this project.
 ```sh
-spark-sql --jars accesslog_2.11-0.1.0-SNAPSHOT.jar
+spark-sql --jars access-log_2.11-0.1.0.jar
 ```
 
 In SQL, you can create user defined function and use it:
@@ -76,7 +76,7 @@ which has the following meaning:
 ```
 sbt clean package
 ```
-generates `accesslog_2.11-0.1.0-SNAPSHOT.jar` in `target/scala-2.11`.
+generates `access-log_2.11-0.1.0.jar` in `target/scala-2.11`.
 
 ### Motivation
  * To simplify analysis of web server logs
