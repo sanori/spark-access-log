@@ -18,7 +18,7 @@ In SQL, you can create user defined function and use it:
 ```sql
 -- attach ToCombined as to_combined(text_line)
 CREATE OR REPLACE FUNCTION to_combined
-AS net.sanori.spark.ToCombined;
+AS "net.sanori.spark.ToCombined";
 
 -- read raw log file as one column table
 CREATE OR REPLACE TEMP VIEW accessLogText
@@ -36,7 +36,7 @@ AS SELECT log.*
 
 ### Spark SQL in Scala
 ```scala
-import net.sanori.spark.accessLog._
+import net.sanori.spark.accessLog.{to_combined, CombinedLog}
 import org.apache.spark.sql.functions._
 
 val lineDs = spark.read.textFile("access.log")
@@ -44,16 +44,31 @@ val logDs = lineDs
   .select(to_combined(col("value")).as("log"))
   .select(col("log.*"))
   .as[CombinedLog]
-
 ```
 
 ### RDD in Scala
 ```scala
-import net.sanori.spark.accessLog._
+import net.sanori.spark.accessLog.toCombinedLog
 
 val lines = sc.textFile("access.log")
 val rdd = lines.map(toCombinedLog)
 ```
+
+## What is provided
+Combined or Common logs are transformed to the table
+which has the following meaning:
+
+| name          | type      | default value        |
+|---------------|-----------|----------------------|
+| remoteAddr    | String    | ""                   |
+| remoteUser    | String    | ""                   |
+| time          | Timestamp | 1970-01-01T00:00:00Z |
+| request       | String    | ""                   |
+| status        | String    | ""                   |
+| bytesSent     | Long      | null                 |
+| httpReferer   | String    | ""                   |
+| httpUserAgent | String    | ""                   |
+
 
 ## Other information
 
@@ -73,3 +88,7 @@ If you want to view access.log as a table on Hive, not on Spark,
 or want to process various log formats,
 [nielsbasjes/logparser](https://github.com/nielsbasjes/logparser/)
 might be better solution.
+
+### Contribution
+Suggestions, idea, comments, pull requests are welcome.
+ * https://github.com/sanori/spark-access-log/issues
