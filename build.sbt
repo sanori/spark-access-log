@@ -1,5 +1,36 @@
 ThisBuild / scalaVersion := "2.11.12"
-ThisBuild / organization := "net.sanori"
+ThisBuild / organization := "net.sanori.spark"
+ThisBuild / organizationName := "SanoriNet"
+ThisBuild / organizationHomepage := Some(url("http://sanori.github.io/"))
+
+ThisBuild / scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/sanori/spark-access-log"),
+    "scm:git@github.com:sanori/spark-access-log.git"
+  )
+)
+ThisBuild / developers := List(
+  Developer(
+    id = "sanori",
+    name = "Joo-Won Jung",
+    email = "sanori@sanori.net",
+    url = url("https://sanori.github.io/")
+  )
+)
+ThisBuild / licenses := Seq(
+  "Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")
+)
+ThisBuild / homepage := Some(url("https://github.com/sanori/spark-access-log"))
+
+ThisBuild / pomIncludeRepository := { _ => false }
+ThisBuild / publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+ThisBuild / publishMavenStyle := true
 
 lazy val root = (project in file("."))
   .settings(
@@ -13,3 +44,13 @@ lazy val root = (project in file("."))
 // fork in Test := true
 // javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled")
 // parallelExecution in Test := false
+
+credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential")
+
+// To specify signing key
+credentials += Credentials(
+  "GnuPG Key ID",
+  "gpg",
+  "615633F4F7E94C938A2918DF10CB79CA9DDE74FD",
+  "ignored"
+)
