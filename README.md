@@ -9,9 +9,9 @@ log formats are supported.
 ## How to use
 
 ### SQL (spark-sql)
-When start spark-sql, include jar file of this project.
+When start spark-sql:
 ```sh
-spark-sql --jars accesslog_2.11-0.1.0-SNAPSHOT.jar
+spark-sql --packages net.sanori.spark:access-log_2.11:0.1.0
 ```
 
 In SQL, you can create user defined function and use it:
@@ -46,6 +46,16 @@ val logDs = lineDs
   .as[CombinedLog]
 ```
 
+When start spark-shell:
+```sh
+spark-shell --packages net.sanori.spark:access-log_2.11:0.1.0
+```
+
+In build.sbt:
+```sbtshell
+libraryDependencies += "net.sanori.spark" %% "access-log" % "0.1.0"
+```
+
 ### RDD in Scala
 ```scala
 import net.sanori.spark.accessLog.toCombinedLog
@@ -76,7 +86,7 @@ which has the following meaning:
 ```
 sbt clean package
 ```
-generates `accesslog_2.11-0.1.0-SNAPSHOT.jar` in `target/scala-2.11`.
+generates `access-log_2.11-0.1.0.jar` in `target/scala-2.11`.
 
 ### Motivation
  * To simplify analysis of web server logs
