@@ -48,10 +48,8 @@ lazy val root = (project in file("."))
 
 credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential")
 
+useGpg := true
+// workaround for sbt/sbt-pgp#126
+pgpSecretRing := pgpPublicRing.value
 // To specify signing key
-credentials += Credentials(
-  "GnuPG Key ID",
-  "gpg",
-  "615633F4F7E94C938A2918DF10CB79CA9DDE74FD",
-  "ignored"
-)
+usePgpKeyHex("10CB79CA9DDE74FD")

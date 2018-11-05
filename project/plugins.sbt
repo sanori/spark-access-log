@@ -1,1 +1,1 @@
-addSbtPlugin("io.crashbox" % "sbt-gpg" % "0.2.0")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.0.0-M2")
