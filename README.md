@@ -34,29 +34,36 @@ AS SELECT log.*
     )
 ```
 
-### Spark SQL in Scala
-```scala
-import net.sanori.spark.accessLog.{to_combined, CombinedLog}
-import org.apache.spark.sql.functions._
-
-val lineDs = spark.read.textFile("access.log")
-val logDs = lineDs
-  .select(to_combined(col("value")).as("log"))
-  .select(col("log.*"))
-  .as[CombinedLog]
-```
-
+### Spark SQL (spark-shell)
 When start spark-shell:
 ```sh
 spark-shell --packages net.sanori.spark:access-log_2.11:0.1.0
 ```
-
-In build.sbt:
+Or in build.sbt:
 ```sbtshell
 libraryDependencies += "net.sanori.spark" %% "access-log" % "0.1.0"
 ```
 
-### RDD in Scala
+#### DataFrame
+```scala
+import net.sanori.spark.accessLog.to_combined
+import org.apache.spark.sql.functions._
+
+val lineDf = spark.read.text("access.log")
+val logDf = lineDf
+  .select(to_combined(col("value")).as("log"))
+  .select(col("log.*"))
+```
+
+#### Dataset
+```scala
+import net.sanori.spark.accessLog.toCombinedLog
+
+val lineDs = spark.read.textFile("access.log")
+val logDs = lineDs.map(toCombinedLog)
+```
+
+#### RDD
 ```scala
 import net.sanori.spark.accessLog.toCombinedLog
 
