@@ -39,6 +39,19 @@ class AccessLogSpec extends SparkSqlSpec {
       assert(actual.bytesSent === None)
     }
 
+    it("parses request path with double quote") {
+      val line = "141.102.80.130 - - [13/Jul/1995:19:25:35 -0400] \"GET /history/apollo/apollo.html\" HTTP/1.0\" 404 -"
+      val actual = accessLog.toCombinedLog(line)
+      assert(actual.remoteAddr === "141.102.80.130")
+      assert(actual.remoteUser === "")
+      assert(actual.time === Timestamp.from(
+        Instant.parse("1995-07-13T23:25:35Z")
+      ))
+      assert(actual.request === "GET /history/apollo/apollo.html\" HTTP/1.0")
+      assert(actual.status === "404")
+      assert(actual.bytesSent === None)
+    }
+
     it("works with Spark RDD") {
       val lines = sc.textFile(fsPath("combined.log"))
       val rdd = lines.map(accessLog.toCombinedLog)

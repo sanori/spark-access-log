@@ -5,6 +5,7 @@ import java.text.ParseException
 import java.time._
 import java.time.format._
 
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 
@@ -22,8 +23,10 @@ object accessLog {
                          httpReferer: String = "",
                          httpUserAgent: String = "")
 
-  val accessLogPattern: Regex = ("^([^ ]+) [^ ]+ ([^ ]+)" +
-    " \\[([^]]+)\\] \"([^\"]+)\" ([^ ]+) ([^ ]+)" +
+  protected val log = Logger.getLogger(this.getClass.getName)
+
+  protected val accessLogPattern: Regex = ("^([^ ]+) [^ ]+ ([^ ]+)" +
+    " \\[([^]]+)\\] \"(.+)\" ([0-9]+) ([0-9-]+)" +
     "(?: \"([^\"]+)\" \"([^\"]+)\")?").r
 
   val strftimeFormat: DateTimeFormatter =
@@ -39,7 +42,10 @@ object accessLog {
           ),
           request, status, Try(bytesSent.toLong).toOption,
           if (referrer == "-") "" else referrer, userAgent)
-      case _ => throw new ParseException("Not an access.log", 0)
+      case _ => {
+        log.error("Regex match failed: '" + line + "'")
+        throw new ParseException("Not an access.log: '" + line + "'" , 0)
+      }
     }
   }
 
