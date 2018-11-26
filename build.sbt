@@ -35,7 +35,7 @@ ThisBuild / publishMavenStyle := true
 lazy val root = (project in file("."))
   .settings(
     name := "access-log",
-    version := "0.1.0b-SNAPSHOT",
+    version := "0.1.1-SNAPSHOT",
     libraryDependencies += "org.apache.spark" %% "spark-core" % "2.3.2",
     libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.3.2",
     libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.3.2",

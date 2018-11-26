@@ -1,5 +1,6 @@
 package net.sanori.spark
 
+import org.apache.hadoop.hive.ql.exec.Description
 import org.apache.hadoop.hive.ql.udf.generic.GenericUDF
 import org.apache.hadoop.hive.serde2.objectinspector.PrimitiveObjectInspector.PrimitiveCategory
 import org.apache.hadoop.hive.serde2.objectinspector._
@@ -7,6 +8,26 @@ import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectIn
 
 import scala.collection.JavaConverters._
 
+/** Access.log parser in Hive User defined function.
+ *
+ * For example, `to_combined` function can be defined as follows in spark-sql:
+ * {{{
+ *   CREATE OR REPLACE FUNCTION to_combined
+ *   AS "net.sanori.spark.ToCombined";
+ * }}}
+ *
+ * The `to_combined` function parses the text column in Combined Log format
+ * to columns in [[accessLog.CombinedLog]].
+ * If the `value` column is in access.log text, one can parse the column
+ * as follows:
+ * {{{
+ *   SELECT to_combined(value) AS log
+ *   FROM accessLogText;
+ * }}}
+ */
+@Description(name = "to_combined",
+  value = "_FUNC_(str) - Return Combined Log columns" +
+    " by parsing `str` as access.log")
 class ToCombined extends GenericUDF {
   protected var inputInspector: PrimitiveObjectInspector = _
 

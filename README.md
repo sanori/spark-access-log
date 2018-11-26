@@ -31,7 +31,7 @@ AS SELECT log.*
     FROM (
         SELECT to_combined(value) AS log
         FROM accessLogText
-    )
+    );
 ```
 
 ### Spark SQL (spark-shell)
