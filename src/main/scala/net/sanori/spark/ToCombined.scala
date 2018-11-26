@@ -1,5 +1,6 @@
 package net.sanori.spark
 
+import org.apache.hadoop.hive.ql.exec.Description
 import org.apache.hadoop.hive.ql.udf.generic.GenericUDF
 import org.apache.hadoop.hive.serde2.objectinspector.PrimitiveObjectInspector.PrimitiveCategory
 import org.apache.hadoop.hive.serde2.objectinspector._
@@ -24,6 +25,9 @@ import scala.collection.JavaConverters._
  *   FROM accessLogText;
  * }}}
  */
+@Description(name = "to_combined",
+  value = "_FUNC_(str) - Return Combined Log columns" +
+    " by parsing `str` as access.log")
 class ToCombined extends GenericUDF {
   protected var inputInspector: PrimitiveObjectInspector = _
 

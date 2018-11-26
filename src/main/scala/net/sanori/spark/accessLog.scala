@@ -5,7 +5,7 @@ import java.text.ParseException
 import java.time._
 import java.time.format._
 
-import org.apache.log4j.{Level, Logger}
+import org.apache.log4j.Logger
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 
